@@ -4,12 +4,18 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+using MVC06.Models;
+
 namespace MVC06.Controllers
 {
     public class HomeController : Controller
     {
         public ActionResult Index()
         {
+            DaoCorreo daoCorreo = new DaoCorreo();
+            List<clientes> list = daoCorreo.correosQry();
+            ViewBag.Lista = list;
+
             return View();
         }
 

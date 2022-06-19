@@ -1,31 +1,159 @@
-﻿@{
-    ViewBag.Title = "Home Page";
-}
-
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+﻿<div class="row p-1" style="background-color:#ccddee">
+    <div class="col-6 ps-1">
+        <img src="~/images/logo.gif" class="d-inline-block align-top" />
+        <span style="font-size:x-large; font-weight:bold; color:#336699">PARAINFORMATICOS</span>
+    </div>
+    <div class="col-6 pe-1 text-end">
+        <button type="button" class="btn btn-warning" onclick="clientesIns();"><i class="bi-person-plus" style="color:#090"></i> Nuevo Cliente</button>
+    </div>
 </div>
 
 <div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+    @foreach (var a in ViewBag.Lista)
+    {
+        <div class="col-12 col-sm-12 col-md-6 col-xl-4 col-xxl-3">
+            <div class="card bg-light border-info m-2">
+                <div class="card-header">
+                    <div style="float:left; font-size:large">
+                        <a href="#" onclick="correosIns('@a.idcliente', '@a.apellidos', '@a.nombres');" style="text-decoration:none" title="Nuevo Correo"><i class="bi-file-earmark-plus-fill" style="color:#090"></i></a>
+                        <a href="#" onclick="telefonosIns('@a.idcliente', '@a.apellidos', '@a.nombres');" style="text-decoration:none" title="Nuevo Telefono"><i class="bi-phone-fill" style="color:#009"></i></a>
+                        <span style="font-weight:bold">@a.nombres @a.apellidos</span>
+                    </div>
+                    <div style="float:right; font-size:large">
+                        <a href="#" onclick="clientesDel('@a.idcliente', '@a.apellidos', '@a.nombres');" style="text-decoration:none" title="Retirar Cliente"><i class="bi-person-dash-fill" style="color:#900"></i></a>&nbsp;&nbsp;
+                        <a href="#" onclick="clientesUpd('@a.idcliente', '@a.apellidos', '@a.nombres');" style="text-decoration:none" title="Actualizar Cliente"><i class="bi-person-check-fill" style="color:#009"></i></a>
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+                <div class="card-body">
+                    <div style="height:200px; overflow:auto">
+                        @foreach (var c in a.correos)
+                        {
+                            <div class="card bg-light border-info m-2">
+                                <div class="card-header">
+                                    <div style="float:left; font-size:large">
+                                        
+                                        <span style="font-weight:bold">Correos</span>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <span id="idcorreo_@c.idcorreo">@c.correo</span></td>
+                                                    <td><div class="text-end">
+                                                        <a href="#" onclick="correosDel('@c.idcorreo');" style="text-decoration:none" title="Retirar Correo"><i class="bi-x-octagon-fill" style="color:#900"></i></a>&nbsp;&nbsp;
+                                                        <a href="#" onclick="correosUpd('@c.idcorreo', '@a.idcliente', '@a.apellidos', '@a.nombres');" style="text-decoration:none" title="Actualizar Correo"><i class="bi-pencil-fill" style="color:#009"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        
+                                    </table>
+                                </div>
+                            </div>
+                        }
+
+                        <table class="table">
+                            <tbody>
+                                @foreach (var t in a.telefonos)
+                                {
+                                    <tr>
+                                        <td>
+                                            <span id="idtelefono_@a.">@t.telefono</span>
+                                            <div class="text-end">
+                                                <a href="#" onclick="telefonosDel('@t.idtelefono');" style="text-decoration:none" title="Retirar Telefono"><i class="bi-x-octagon-fill" style="color:#900"></i></a>&nbsp;&nbsp;
+                                                <a href="#" onclick="telefonosUpd('@t.idtelefono', '@a.idcliente', '@a.apellidos');" style="text-decoration:none" title="Actualizar Telefono"><i class="bi-pencil-fill" style="color:#009"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- DIALOGO CLIENTES -->
+
+<div id="dlg_clientes" class="modal fade show" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header" style="background-color: #d3e9fa">
+                    <h5 id="dlg_clientes_title" class="modal-title">Nuevo Cliente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" id="tbl_clientes_accion" />
+                    <input type="hidden" id="tbl_clientes_idcliente" />
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="tbl_clientes_apellidos">Apellidos</label>
+                            <input type="text" class="form-control" id="tbl_clientes_apellidos" placeholder="nombres de cliente entre [10, 200] caracteres">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="tbl_clientes_nombres">Nombres</label>
+                            <input type="text" class="form-control" id="tbl_clientes_nombres" placeholder="apellidos de cliente entre [10, 200] caracteres">
+                        </div>
+                    </div>
+
+                    <div id="dlg_clientes_errores" style="margin: 16px 30px;color: #900"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="clientesInsUpd();" style="width: 120px;margin-right: 12px">Guardar</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" style="width: 120px">Cancelar</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+</div>
+
+<!-- DIALOGO FRASES -->
+
+<div id="dlg_frases" class="modal fade show" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header" style="background-color: #d3e9fa">
+                    <h5 id="dlg_frases_title" class="modal-title">Nueva Frase</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" id="tbl_frases_accion" />
+                    <input type="hidden" id="tbl_frases_idautor" />
+                    <input type="hidden" id="tbl_frases_idfrase" />
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="tbl_frases_autor">Autor</label>
+                            <input type="text" class="form-control" id="tbl_frases_autor" readonly="readonly">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="tbl_frases_frase">Frase</label>
+                            <textarea class="form-control" id="tbl_frases_frase" style="resize:none;" placeholder="texto de la frase célebre [entre 10, 1000] caracteres"></textarea>
+                        </div>
+                    </div>
+
+                    <div id="dlg_frases_errores" style="margin: 16px 30px;color: #900"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="frasesInsUpd();" style="width: 120px;margin-right: 12px">Guardar</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" style="width: 120px">Cancelar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

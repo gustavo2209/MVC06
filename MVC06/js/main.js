@@ -1,39 +1,43 @@
 
-// ACCIONES CON AUTORES
+// ACCIONES CON CLIENTES
 
-function autoresIns() {
-    $("#tbl_autores_accion").val("INS");
-    $("#tbl_autores_autor").val("");
+function clientesIns() {
+    $("#tbl_clientes_accion").val("INS");
+    $("#tbl_clientes_apellidos").val("");
+    $("#tbl_clientes_nombres").val("");
 
-    $("#dlg_autores_title").text("Nuevo Autor");
-    $("#dlg_autores_errores").html("");
+    $("#dlg_clientes_title").text("Nuevo Cliente");
+    $("#dlg_clientes_errores").html("");
 
-    $("#dlg_autores").modal("show");
+    $("#dlg_clientes").modal("show");
 }
 
-function autoresUpd(idautor, autor) {
-    $("#tbl_autores_accion").val("UPD");
-    $("#tbl_autores_idautor").val(idautor);
-    $("#tbl_autores_autor").val(autor);
+function clientesUpd(idcliente, apellidos, nombres) {
+    $("#tbl_clientes_accion").val("UPD");
+    $("#tbl_clientes_idcliente").val(idcliente);
+    $("#tbl_clientes_apellidos").val(apellidos);
+    $("#tbl_clientes_nombres").val(nombres);
 
-    $("#dlg_autores_title").text("Actualizar datos de Autor");
-    $("#dlg_autores_errores").html("");
+    $("#dlg_clientes_title").text("Actualizar datos de Cliente");
+    $("#dlg_clientes_errores").html("");
 
-    $("#dlg_autores").modal("show");
+    $("#dlg_clientes").modal("show");
 }
 
-function autoresInsUpd() {
-    var accion = $("#tbl_autores_accion").val();
-    var idautor = $("#tbl_autores_idautor").val();
-    var autor = $("#tbl_autores_autor").val();
+function clientesInsUpd() {
+    var accion = $("#tbl_clientes_accion").val();
+    var idcliente = $("#tbl_clientes_idcliente").val();
+    var apellido = $("#tbl_clientes_apellidos").val();
+    var nombre = $("#tbl_clientes_nombres").val();
 
     if (accion === "INS") {
         $.ajax({
-            url: "Autores/AutoresIns",
+            url: "Cliente/ClientesIns",
             dataType: "json",
             type: "POST",
             data: {
-                autor: autor
+                apellido: apellido,
+                nombre: nombre
             },
             success: function (result) {
                 //alert(JSON.stringify(result));
@@ -41,18 +45,19 @@ function autoresInsUpd() {
                 if (result.msg === "") {
                     window.location = "../";
                 } else {
-                    $("#dlg_autores_errores").html(result.msg);
+                    $("#dlg_clientes_errores").html(result.msg);
                 }
             }
         });
     } else if (accion === "UPD") {
         $.ajax({
-            url: "Autores/AutoresUpd",
+            url: "Cliente/ClientesUpd",
             dataType: "json",
             type: "POST",
             data: {
-                idautor: idautor,
-                autor: autor
+                idcliente: idcliente,
+                apellido: apellido,
+                nombre: nombre
             },
             success: function (result) {
                 //alert(JSON.stringify(result));
@@ -60,19 +65,19 @@ function autoresInsUpd() {
                 if (result.msg === "") {
                     window.location = "../";
                 } else {
-                    $("#dlg_autores_errores").html(result.msg);
+                    $("#dlg_clientes_errores").html(result.msg);
                 }
             }
         });
     }
 }
 
-function autoresDel(idautor, autor) {
-    $("#dlg_confirm_dato1").val("DEL_AUTOR");
-    $("#dlg_confirm_dato2").val(idautor);
+function clientesDel(idcliente, apellidos, nombres) {
+    $("#dlg_confirm_dato1").val("DEL_CLIENTE");
+    $("#dlg_confirm_dato2").val(idcliente);
 
-    $("#dlg_confirm_title").text("Retirar Autor");
-    $("#dlg_confirm_msg").html("¿Desea retirar a " + autor + "?");
+    $("#dlg_confirm_title").text("Retirar Cliente");
+    $("#dlg_confirm_msg").html("¿Desea retirar a " + apellidos + " " + nombres + "?");
     
     $("#dlg_confirm_error").hide();
     $("#dlg_confirm").modal("show");
@@ -169,15 +174,15 @@ function frasesDel(idfrase) {
 function dlg_confirm_confirm() {
     var accion = $("#dlg_confirm_dato1").val();
 
-    if (accion === "DEL_AUTOR") {
-        var idautor = $("#dlg_confirm_dato2").val();
+    if (accion === "DEL_CLIENTE") {
+        var idcliente = $("#dlg_confirm_dato2").val();
 
         $.ajax({
-            url: "Autores/AutoresDel",
+            url: "Cliente/ClientesDel",
             dataType: "json",
             type: "POST",
             data: {
-                idautor: idautor
+                idcliente: idcliente
             },
             success: function (result) {
                 //alert(JSON.stringify(result));
