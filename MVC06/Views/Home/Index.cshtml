@@ -32,7 +32,7 @@
                             <div class="card bg-light border-info m-2">
                                 <div class="card-header">
                                     <div style="float:left; font-size:large">
-                                        
+
                                         <span style="font-weight:bold">Correos</span>
                                     </div>
                                 </div>
@@ -41,36 +41,51 @@
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <span id="idcorreo_@c.idcorreo">@c.correo</span></td>
-                                                    <td><div class="text-end">
+                                                    <span id="idcorreo_@c.idcorreo">@c.correo</span>
+                                                </td>
+                                                <td>
+                                                    <div class="text-end">
                                                         <a href="#" onclick="correosDel('@c.idcorreo');" style="text-decoration:none" title="Retirar Correo"><i class="bi-x-octagon-fill" style="color:#900"></i></a>&nbsp;&nbsp;
                                                         <a href="#" onclick="correosUpd('@c.idcorreo', '@a.idcliente', '@a.apellidos', '@a.nombres');" style="text-decoration:none" title="Actualizar Correo"><i class="bi-pencil-fill" style="color:#009"></i></a>
                                                     </div>
                                                 </td>
                                             </tr>
                                         </tbody>
-                                        
+
                                     </table>
                                 </div>
                             </div>
                         }
 
-                        <table class="table">
-                            <tbody>
-                                @foreach (var t in a.telefonos)
-                                {
-                                    <tr>
-                                        <td>
-                                            <span id="idtelefono_@a.">@t.telefono</span>
-                                            <div class="text-end">
-                                                <a href="#" onclick="telefonosDel('@t.idtelefono');" style="text-decoration:none" title="Retirar Telefono"><i class="bi-x-octagon-fill" style="color:#900"></i></a>&nbsp;&nbsp;
-                                                <a href="#" onclick="telefonosUpd('@t.idtelefono', '@a.idcliente', '@a.apellidos');" style="text-decoration:none" title="Actualizar Telefono"><i class="bi-pencil-fill" style="color:#009"></i></a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+
+                        @foreach (var t in a.telefonos)
+                        {
+                            <div class="card bg-light border-info m-2">
+                                <div class="card-header">
+                                    <div style="float:left; font-size:large">
+
+                                        <span style="font-weight:bold">Telefonos</span>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <span id="idtelefono_@t.idtelefono">@t.telefono</span>
+                                                </td>
+                                                <td>
+                                                    <div class="text-end">
+                                                        <a href="#" onclick="telefonosDel('@t.idtelefono');" style="text-decoration:none" title="Retirar Telefono"><i class="bi-x-octagon-fill" style="color:#900"></i></a>&nbsp;&nbsp;
+                                                        <a href="#" onclick="telefonosUpd('@t.idtelefono', '@a.idcliente', '@a.apellidos', '@a.nombres');" style="text-decoration:none" title="Actualizar Telefono"><i class="bi-pencil-fill" style="color:#009"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -116,41 +131,91 @@
     </div>
 </div>
 
-<!-- DIALOGO FRASES -->
+<!-- DIALOGO CORREOS -->
 
-<div id="dlg_frases" class="modal fade show" aria-hidden="true" style="display: none;">
+<div id="dlg_correos" class="modal fade show" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form>
                 <div class="modal-header" style="background-color: #d3e9fa">
-                    <h5 id="dlg_frases_title" class="modal-title">Nueva Frase</h5>
+                    <h5 id="dlg_correos_title" class="modal-title">Nuevo Correo</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">
-                    <input type="hidden" id="tbl_frases_accion" />
-                    <input type="hidden" id="tbl_frases_idautor" />
-                    <input type="hidden" id="tbl_frases_idfrase" />
+                    <input type="hidden" id="tbl_correos_accion" />
+                    <input type="hidden" id="tbl_correos_idcliente" />
+                    <input type="hidden" id="tbl_correos_idcorreo" />
 
                     <div class="row">
-                        <div class="col-md-12">
-                            <label for="tbl_frases_autor">Autor</label>
-                            <input type="text" class="form-control" id="tbl_frases_autor" readonly="readonly">
+                        <div class="col-md-6">
+                            <label for="tbl_correos_apellidos_cliente">Apellidos del Cliente</label>
+                            <input type="text" class="form-control" id="tbl_correos_apellidos_cliente" readonly="readonly">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="tbl_correos_nombres_cliente">Nombres del Cliente</label>
+                            <input type="text" class="form-control" id="tbl_correos_nombres_cliente" readonly="readonly">
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12">
-                            <label for="tbl_frases_frase">Frase</label>
-                            <textarea class="form-control" id="tbl_frases_frase" style="resize:none;" placeholder="texto de la frase célebre [entre 10, 1000] caracteres"></textarea>
+                            <label for="tbl_correos_correo">Correo</label>
+                            <input type="text" class="form-control" id="tbl_correos_correo" placeholder="Ingrese correo electronico">
                         </div>
                     </div>
 
-                    <div id="dlg_frases_errores" style="margin: 16px 30px;color: #900"></div>
+                    <div id="dlg_correos_errores" style="margin: 16px 30px;color: #900"></div>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" onclick="frasesInsUpd();" style="width: 120px;margin-right: 12px">Guardar</button>
+                    <button type="button" class="btn btn-danger" onclick="correosInsUpd();" style="width: 120px;margin-right: 12px">Guardar</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" style="width: 120px">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- DIALOGO TELEFONOS -->
+
+<div id="dlg_telefonos" class="modal fade show" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header" style="background-color: #d3e9fa">
+                    <h5 id="dlg_telefonos_title" class="modal-title">Nuevo Telefono</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" id="tbl_telefonos_accion" />
+                    <input type="hidden" id="tbl_telefonos_idcliente" />
+                    <input type="hidden" id="tbl_telefonos_idtelefono" />
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="tbl_telefonos_apellidos_cliente">Apellidos del Cliente</label>
+                            <input type="text" class="form-control" id="tbl_telefonos_apellidos_cliente" readonly="readonly">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="tbl_telefonos_nombres_cliente">Nombres del Cliente</label>
+                            <input type="text" class="form-control" id="tbl_telefonos_nombres_cliente" readonly="readonly">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="tbl_telefonos_correo">Telefono</label>
+                            <input type="text" class="form-control" id="tbl_telefonos_telefono" placeholder="Ingrese numero telefonico">
+                        </div>
+                    </div>
+
+                    <div id="dlg_telefonos_errores" style="margin: 16px 30px;color: #900"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="telefonosInsUpd();" style="width: 120px;margin-right: 12px">Guardar</button>
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal" style="width: 120px">Cancelar</button>
                 </div>
             </form>

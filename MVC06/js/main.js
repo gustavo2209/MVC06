@@ -83,47 +83,49 @@ function clientesDel(idcliente, apellidos, nombres) {
     $("#dlg_confirm").modal("show");
 }
 
-// ACCIONES CON FRASES
+// ACCIONES CON CORREOS
 
-function frasesIns(idautor, autor) {
-    $("#tbl_frases_accion").val("INS");
-    $("#tbl_frases_idautor").val(idautor);
-    $("#tbl_frases_autor").val(autor);
-    $("#tbl_frases_frase").val("");
+function correosIns(idcliente, apellidos, nombres) {
+    $("#tbl_correos_accion").val("INS");
+    $("#tbl_correos_idcliente").val(idcliente);
+    $("#tbl_correos_apellidos_cliente").val(apellidos);
+    $("#tbl_correos_nombres_cliente").val(nombres);
+    $("#tbl_correos_correo").val("");
 
-    $("#dlg_frases_title").text("Nueva Frase");
-    $("#dlg_frases_errores").html("");
+    $("#dlg_correos_title").text("Nuevo Correo");
+    $("#dlg_correos_errores").html("");
 
-    $("#dlg_frases").modal("show");
+    $("#dlg_correos").modal("show");
 }
 
-function frasesUpd(idfrase, idautor, autor) {
-    $("#tbl_frases_accion").val("UPD");
-    $("#tbl_frases_idfrase").val(idfrase);
-    $("#tbl_frases_idautor").val(idautor);
-    $("#tbl_frases_autor").val(autor);
-    $("#tbl_frases_frase").val($("#idfrase_" + idfrase).text());
+function correosUpd(idcorreo, idcliente, apellidos, nombres) {
+    $("#tbl_correos_accion").val("UPD");
+    $("#tbl_correos_idcorreo").val(idcorreo);
+    $("#tbl_correos_idcliente").val(idcliente);
+    $("#tbl_correos_apellidos_cliente").val(apellidos);
+    $("#tbl_correos_nombres_cliente").val(nombres);
+    $("#tbl_correos_correo").val($("#idcorreo_" + idcorreo).text());
 
-    $("#dlg_frases_title").text("Actualizar Frase");
-    $("#dlg_frases_errores").html("");
+    $("#dlg_correos_title").text("Actualizar Correo");
+    $("#dlg_correos_errores").html("");
 
-    $("#dlg_frases").modal("show");
+    $("#dlg_correos").modal("show");
 }
 
-function frasesInsUpd() {
-    var accion = $("#tbl_frases_accion").val();
-    var idfrase = $("#tbl_frases_idfrase").val();
-    var idautor = $("#tbl_frases_idautor").val();
-    var frase = $("#tbl_frases_frase").val();
+function correosInsUpd() {
+    var accion = $("#tbl_correos_accion").val();
+    var idcorreo = $("#tbl_correos_idcorreo").val();
+    var idcliente = $("#tbl_correos_idcliente").val();
+    var correo = $("#tbl_correos_correo").val();
 
     if (accion === "INS") {
         $.ajax({
-            url: "Frases/FrasesIns",
+            url: "Correo/CorreosIns",
             dataType: "json",
             type: "POST",
             data: {
-                idautor: idautor,
-                frase: frase
+                idcliente: idcliente,
+                correo: correo
             },
             success: function (result) {
                 //alert(JSON.stringify(result));
@@ -131,19 +133,19 @@ function frasesInsUpd() {
                 if (result.msg === "") {
                     window.location = "../";
                 } else {
-                    $("#dlg_frases_errores").html(result.msg);
+                    $("#dlg_correos_errores").html(result.msg);
                 }
             }
         });
     } else if (accion === "UPD") {
         $.ajax({
-            url: "Frases/FrasesUpd",
+            url: "Correo/CorreosUpd",
             dataType: "json",
             type: "POST",
             data: {
-                idfrase: idfrase,
-                idautor: idautor,
-                frase: frase
+                idcorreo: idcorreo,
+                idcliente: idcliente,
+                correo: correo
             },
             success: function (result) {
                 //alert(JSON.stringify(result));
@@ -151,19 +153,107 @@ function frasesInsUpd() {
                 if (result.msg === "") {
                     window.location = "../";
                 } else {
-                    $("#dlg_frases_errores").html(result.msg);
+                    $("#dlg_correos_errores").html(result.msg);
                 }
             }
         });
     }
 }
 
-function frasesDel(idfrase) {
-    $("#dlg_confirm_dato1").val("DEL_FRASE");
-    $("#dlg_confirm_dato2").val(idfrase);
+function correosDel(idcorreo) {
+    $("#dlg_confirm_dato1").val("DEL_CORREO");
+    $("#dlg_confirm_dato2").val(idcorreo);
 
-    $("#dlg_confirm_title").text("Retirar Frase");
-    $("#dlg_confirm_msg").html("¿Desea retirar frase?");
+    $("#dlg_confirm_title").text("Retirar Correo");
+    $("#dlg_confirm_msg").html("¿Desea retirar correo?");
+
+    $("#dlg_confirm_error").hide();
+    $("#dlg_confirm").modal("show");
+}
+
+// ACCIONES CON TELEFONOS
+
+function telefonosIns(idcliente, apellidos, nombres) {
+    $("#tbl_telefonos_accion").val("INS");
+    $("#tbl_telefonos_idcliente").val(idcliente);
+    $("#tbl_telefonos_apellidos_cliente").val(apellidos);
+    $("#tbl_telefonos_nombres_cliente").val(nombres);
+    $("#tbl_telefonos_telefono").val("");
+
+    $("#dlg_telefonos_title").text("Nuevo Telefono");
+    $("#dlg_telefonos_errores").html("");
+
+    $("#dlg_telefonos").modal("show");
+}
+
+function telefonosUpd(idtelefono, idcliente, apellidos, nombres) {
+    $("#tbl_telefonos_accion").val("UPD");
+    $("#tbl_telefonos_idtelefono").val(idtelefono);
+    $("#tbl_telefonos_idcliente").val(idcliente);
+    $("#tbl_telefonos_apellidos_cliente").val(apellidos);
+    $("#tbl_telefonos_nombres_cliente").val(nombres);
+    $("#tbl_telefonos_telefono").val($("#idtelefono_" + idtelefono).text());
+
+    $("#dlg_telefonos_title").text("Actualizar Telefono");
+    $("#dlg_telefonos_errores").html("");
+
+    $("#dlg_telefonos").modal("show");
+}
+
+function telefonosInsUpd() {
+    var accion = $("#tbl_telefonos_accion").val();
+    var idtelefono = $("#tbl_telefonos_idtelefono").val();
+    var idcliente = $("#tbl_telefonos_idcliente").val();
+    var telefono = $("#tbl_telefonos_telefono").val();
+
+    if (accion === "INS") {
+        $.ajax({
+            url: "Telefono/TelefonosIns",
+            dataType: "json",
+            type: "POST",
+            data: {
+                idcliente: idcliente,
+                telefono: telefono
+            },
+            success: function (result) {
+                //alert(JSON.stringify(result));
+
+                if (result.msg === "") {
+                    window.location = "../";
+                } else {
+                    $("#dlg_telefonos_errores").html(result.msg);
+                }
+            }
+        });
+    } else if (accion === "UPD") {
+        $.ajax({
+            url: "Telefono/TelefonosUpd",
+            dataType: "json",
+            type: "POST",
+            data: {
+                idtelefono: idtelefono,
+                idcliente: idcliente,
+                telefono: telefono
+            },
+            success: function (result) {
+                //alert(JSON.stringify(result));
+
+                if (result.msg === "") {
+                    window.location = "../";
+                } else {
+                    $("#dlg_telefonos_errores").html(result.msg);
+                }
+            }
+        });
+    }
+}
+
+function telefonosDel(idtelefono) {
+    $("#dlg_confirm_dato1").val("DEL_TEL");
+    $("#dlg_confirm_dato2").val(idtelefono);
+
+    $("#dlg_confirm_title").text("Retirar Telefono");
+    $("#dlg_confirm_msg").html("¿Desea retirar telefono?");
 
     $("#dlg_confirm_error").hide();
     $("#dlg_confirm").modal("show");
@@ -194,15 +284,35 @@ function dlg_confirm_confirm() {
                 }
             }
         });
-    } else if (accion === "DEL_FRASE") {
-        var idfrase = $("#dlg_confirm_dato2").val();
+    } else if (accion === "DEL_CORREO") {
+        var idcorreo = $("#dlg_confirm_dato2").val();
 
         $.ajax({
-            url: "Frases/FrasesDel",
+            url: "Correo/CorreosDel",
             dataType: "json",
             type: "POST",
             data: {
-                idfrase: idfrase
+                idcorreo: idcorreo
+            },
+            success: function (result) {
+                //alert(JSON.stringify(result));
+
+                if (result.msg === "") {
+                    window.location = "../";
+                } else {
+                    $("#dlg_confirm_error").html(result.msg);
+                }
+            }
+        });
+    } else if (accion === "DEL_TEL") {
+        var idtelefono = $("#dlg_confirm_dato2").val();
+
+        $.ajax({
+            url: "Telefono/TelefonosDel",
+            dataType: "json",
+            type: "POST",
+            data: {
+                idtelefono: idtelefono
             },
             success: function (result) {
                 //alert(JSON.stringify(result));
